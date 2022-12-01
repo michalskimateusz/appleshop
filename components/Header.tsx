@@ -1,6 +1,4 @@
 import Image from "next/image";
-import logo from "../public/Apple_logo_black.png";
-import avatar from "../public/avatar.png";
 import Link from "next/link";
 import {
   MagnifyingGlassIcon,
@@ -16,7 +14,12 @@ const Header = () => {
       <div className="flex items-center justify-center md:w-1/5">
         <Link href="/">
           <div className="relative h-10 w-5 cursor-pointer opacity-75 transition hover:opacity-100 ">
-            <Image src={logo} alt="logo" objectFit="contain" layout="fill" />
+            <Image
+              src="/Apple_logo_black.png"
+              alt="logo"
+              objectFit="contain"
+              layout="fill"
+            />
           </div>
         </Link>
       </div>
@@ -46,7 +49,7 @@ const Header = () => {
         </Link>
         {session ? (
           <Image
-            src={avatar}
+            src="/avatar.png"
             alt="avatar"
             className="cursor-pointer rounded-full"
             width={34}
