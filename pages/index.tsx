@@ -27,7 +27,7 @@ const Home = ({ categories, products }: IProps) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header />
-      <main className="relative h-[200vh] bg-[#E7ECEE]">
+      <main className="relative h-[200vh] bg-[#ebebeb]">
         <Landing />
       </main>
       <section className="relative z-40 -mt-[100vh] min-h-screen bg-[#1B1B1B]">
