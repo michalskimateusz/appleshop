@@ -20,6 +20,7 @@ interface Image {
 }
 
 interface Product {
+  push(item: Product): unknown;
   _id: string;
   _createdAt: string;
   _updatedAt: string;
