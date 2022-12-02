@@ -6,6 +6,7 @@ import Landing from "../components/Landing";
 import Product from "../components/Product";
 import { fetchCategories } from "../utils/fetchCategories";
 import { fetchProducts } from "../utils/fetchProducts";
+import Basket from "../components/Basket";
 
 interface IProps {
   categories: Category[];
@@ -27,6 +28,7 @@ const Home = ({ categories, products }: IProps) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header />
+      <Basket />
       <main className="relative h-[200vh] bg-[#ebebeb]">
         <Landing />
       </main>
