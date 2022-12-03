@@ -5,15 +5,18 @@ import { useSelector } from "react-redux";
 import { selectBasketItems, selectBasketTotal } from "../redux/basketSlice";
 import Button from "../components/Button";
 import { useRouter } from "next/router";
-import { set } from "immer/dist/utils/common";
 import CheckoutProduct from "../components/CheckoutProduct";
 import Currency from "react-currency-formatter";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
+import Stripe from "stripe";
+import { fetchPostJSON } from "../utils/api-helpers";
+import getStripe from "../utils/get-stripejs";
 
 const Checkout = () => {
   const [groupedItemsInBasket, setGroupedItemsInBasket] = useState(
     {} as { [key: string]: Product[] }
   );
+  const [loading, setLoading] = useState(false);
   const items = useSelector(selectBasketItems);
   const basketTotal = useSelector(selectBasketTotal);
   const router = useRouter();
@@ -25,6 +28,29 @@ const Checkout = () => {
     }, {} as { [key: string]: Product[] });
     setGroupedItemsInBasket(groupedItems);
   }, [items]);
+
+  const createCheckoutSession = async () => {
+    setLoading(true);
+    const checkoutSession: Stripe.Checkout.Session = await fetchPostJSON(
+      "/api/checkout_sessions",
+      {
+        items: items,
+      }
+    );
+
+    if ((checkoutSession as any).statusCode === 500) {
+      console.error((checkoutSession as any).message);
+      return;
+    }
+
+    const stripe = await getStripe();
+    const { error } = await stripe!.redirectToCheckout({
+      sessionId: checkoutSession.id,
+    });
+    console.warn(error.message);
+
+    setLoading(false);
+  };
 
   return (
     <div className="min-h-screen overflow-hidden bg-[#ebebeb]">
@@ -108,10 +134,10 @@ const Checkout = () => {
                     </h4>
                     <Button
                       title="Check out"
-                      // loading={loading}
+                      loading={loading}
                       width="w-full"
                       noIcon
-                      // onClick={createCheckoutSession}
+                      onClick={createCheckoutSession}
                     />
                   </div>
                 </div>
