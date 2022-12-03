@@ -7,9 +7,11 @@ import {
 } from "@heroicons/react/24/outline";
 import { useSelector } from "react-redux";
 import { selectBasketItems } from "../redux/basketSlice";
+import { signIn, signOut, useSession } from "next-auth/react";
 
 const Header = () => {
-  const session = false;
+  const { data: session } = useSession();
+  // const session = false;
   const items = useSelector(selectBasketItems);
 
   return (
@@ -40,7 +42,7 @@ const Header = () => {
           Business
         </Link>
       </div>
-      <div className="flex item-center justify-center gap-x-4 md:w-1/5">
+      <div className="flex items-center justify-center gap-x-4 md:w-1/5">
         <MagnifyingGlassIcon className="headerIcon" />
         <Link href="/checkout">
           <div className="relative cursor-pointer">
@@ -54,14 +56,15 @@ const Header = () => {
         </Link>
         {session ? (
           <Image
-            src="/avatar.png"
+            src={session.user?.image || "/avatar.png"}
             alt="avatar"
             className="cursor-pointer rounded-full"
             width={34}
             height={34}
+            onClick={() => signOut()}
           />
         ) : (
-          <UserIcon className="headerIcon" />
+          <UserIcon className="headerIcon" onClick={() => signIn()} />
         )}
       </div>
     </header>
